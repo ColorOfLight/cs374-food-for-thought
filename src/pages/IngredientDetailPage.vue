@@ -1,15 +1,27 @@
 <template lang="pug">
   .ingredient-add-page
     .inputs-container
-      v-text-field(name="name" label="재료 이름" value="" placeholder="물, 원두, ...")
-      v-text-field(name="storeName" label="거래처 이름" value="" placeholder="메가마트, 홈플러스 유성점, ...")
-      v-text-field(name="productName" label="제품명" value="" placeholder="매일우유, 기라델리 초콜릿 시럽, ...")
+      .detail-item-group
+        label 재료 이름
+        .text 초콜릿 시럽
+      .detail-item-group
+        label 거래처 이름
+        .text 홈플러스 유성점
+      .detail-item-group
+        label 제품명
+        .text 기라델리 초콜릿 소스 스퀴즈 보틀
       v-layout
-        v-flex.left(xs7)
-          v-text-field(name="amount" label="용량 (숫자만 입력)" value="" placeholder="100")
-        v-flex.right(xs5)
-          v-select(:items="units" v-model="unitSelected" label="단위" placeholder="선택")
-      v-text-field(name="price" label="가격 (원)" value="" placeholder="1000")
+        v-flex.left(xs-6)
+          .detail-item-group
+            label 용량
+            .text 454 g
+        v-flex.right(xs-6)
+          .detail-item-group
+            label 가격
+            .text 9,580 원
+      .detail-item-group
+        label 단위 용량당 가격
+        .text 21.1 원
     v-btn.btn-bottom-fixed(color="primary") 추가하기
 </template>
 
