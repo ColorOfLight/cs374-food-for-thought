@@ -31,9 +31,9 @@ export default {
 </script>
 
 <style lang="scss">
-@import './assets/stylesheets/fonts';
+@import './assets/stylesheets/common';
 
-body {
+html {
   color: $default;
   font-size: 16px;
 }

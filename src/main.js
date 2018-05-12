@@ -31,6 +31,9 @@ Vue.use(Vuetify, {
     VGrid,
     VToolbar,
     transitions
+  },
+  theme: {
+    primary: '#f44336'
   }
 })
 
