@@ -22,7 +22,7 @@ export default {
 <style scoped lang="scss">
 .toolbar {
   background-color: $white;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, .2);
+  box-shadow: 0 1.5px 1.5px rgba(0, 0, 0, .15);
 }
 
 .toolbar-title {
