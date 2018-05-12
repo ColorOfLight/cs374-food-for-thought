@@ -13,7 +13,10 @@ import {
   VIcon,
   VGrid,
   VToolbar,
-  transitions
+  transitions,
+  VSubheader,
+  VTextField,
+  VSelect
 } from 'vuetify'
 import VueFire from 'vuefire'
 import './stylus/main.styl'
@@ -30,7 +33,10 @@ Vue.use(Vuetify, {
     VIcon,
     VGrid,
     VToolbar,
-    transitions
+    transitions,
+    VSubheader,
+    VTextField,
+    VSelect
   },
   theme: {
     primary: '#f44336'
