@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import MenuListPage from '@/pages/MenuListPage'
 import IngredientListPage from '@/pages/IngredientListPage'
+import IngredientAddPage from '@/pages/IngredientAddPage'
 
 Vue.use(Router)
 
@@ -18,6 +19,11 @@ export default new Router({
       path: '/ingredients',
       name: 'IngredientList',
       component: IngredientListPage
+    },
+    {
+      path: '/ingredient',
+      name: 'IngredientAdd',
+      component: IngredientAddPage
     },
     {
       path: '*',
