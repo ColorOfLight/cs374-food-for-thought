@@ -16,13 +16,10 @@
 
 <script>
 import ListEmptyContainer from '@/components/ListEmptyContainer'
-import Spinner from '@/components/spinner'
+import Spinner from '@/components/Spinner'
 import Vue from 'vue'
-import VueFire from 'vuefire'
 import db from '@/libs/vuefireConfig.js'
 import { convertToMoneyString } from '@/libs/stringUtils'
-
-Vue.use(VueFire)
 
 export default {
   components: {
