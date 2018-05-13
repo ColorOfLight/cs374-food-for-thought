@@ -13,7 +13,7 @@
         .ingredient-select-item(v-for="(ingredient, key) in prettyIngredients")
           v-checkbox(:label="ingredient.name" color="primary" v-model="selections[key]" hide-details)
     empty-list-container(v-else text="메뉴에 들어갈 재료들을 추가해주세요!" :buttonText="buttonText" clickRouteName="IngredientAdd")
-    v-btn.btn-bottom-fixed(v-if="$route.name === 'IngredientSelect'" :disabled = "isbtnDisabled" color="primary" @click="submitForm()") 재료 추가하기
+    v-btn.btn-bottom-fixed(v-if="$route.name === 'IngredientSelect'" :disabled="isbtnDisabled" color="primary" @click="saveSelections()") 재료 추가하기
   spinner(v-else)
 </template>
 
@@ -43,7 +43,7 @@ export default {
       isFirebaseLoaded: false,
       ingredients: this.$firebaseRefs ? this.$firebaseRefs.ingredients : null,
       selections: {},
-      isbtnDisabled: true
+      isbtnDisabled: false
     }
   },
   computed: {
@@ -63,6 +63,20 @@ export default {
       } else {
         return null;
       }
+    }
+  },
+  methods: {
+    saveSelections () {
+      let ingredients = {};
+      for (const key of Object.keys(this.selections)) {
+        if (this.selections[key]) ingredients[key] = '';
+      }
+      if (Object.keys(ingredients).length === 0) {
+        alert('재료를 하나 이상 선택해주세요!');
+        return;
+      }
+      this.$store.commit('setTemporaryMenu', {ingredients});
+      this.$router.go(-1);
     }
   },
 }
