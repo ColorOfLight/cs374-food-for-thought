@@ -7,4 +7,9 @@
   position: fixed;
   right: 0;
   width: 100%;
+
+  @include above-sm {
+    margin: 0 auto;
+    width: 480px;
+  }
 }

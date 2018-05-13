@@ -10,7 +10,7 @@
         v-btn.btn-new-menu(color="primary" outline @click="$router.push({name: 'MenuAdd'})")
           v-icon.add-icon add
           | {{buttonText}}
-    empty-list-container(v-else text="새 메뉴를 추가하고 원가를 확인해보세요!" :buttonText="buttonText" :clickRouteName="IngredientAdd")
+    empty-list-container(v-else text="새 메뉴를 추가하고 원가를 확인해보세요!" :buttonText="buttonText" clickRouteName="IngredientAdd")
 </template>
 
 <script>
