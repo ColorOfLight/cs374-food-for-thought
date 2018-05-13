@@ -10,20 +10,60 @@
         v-flex.right(xs5)
           v-select(:items="units" label="단위" placeholder="선택" v-model="form.unit")
       v-text-field(name="price" label="가격 (원)" type="number" placeholder="1000" v-model="form.price")
-    v-btn.btn-bottom-fixed(color="primary" @click="submitForm()") 추가하기
+    v-btn.btn-bottom-fixed(:disabled = "isbtnDisabled" color="primary" @click="submitForm()") 추가하기
 </template>
 
 <script>
+import db from '@/libs/vuefireConfig.js'
+
 export default {
   data () {
     return {
       units: ['g (무게)', 'ml (부피)', '개 (개수)'],
       form: {},
+      isbtnDisabled: true
+    }
+  },
+  watch: {
+    "form.amount": function (val) {
+      this.checkValidity(val);
+    },
+    "form.name": function (val) {
+      this.checkValidity(val);
+    },
+    "form.price": function (val) {
+      this.checkValidity(val);
+    },
+    "form.storeName": function (val) {
+      this.checkValidity(val);
+    },
+    "form.unit": function (val) {
+      this.checkValidity(val);
+    },
+    "form.productName": function (val) {
+      this.checkValidity(val);
     }
   },
   methods: {
+    checkValidity (val) {
+      if (this.form['amount'] && this.form['name'] && this.form['price'] && this.form['storeName'] && this.form['unit'] && this.form['productName']) this.isbtnDisabled = false;
+      else this.isbtnDisabled = true;
+    },
     submitForm () {
-      // TODO: connect with Firebase
+      let newkey = db.ref('/ingredients/').push().key;
+      let updateData = {
+        amount: this.form['amount'],
+        name: this.form['name'],
+        price: this.form['price'],
+        storeName: this.form['storeName'],
+        productName: this.form['productName'],
+        unit: this.form['unit'].split(' ')[0],
+        createdTimestamp: new Date()
+      };
+      let self = this;
+      db.ref('/ingredients/' + newkey).update(updateData).then(function() {
+        self.$router.go(-1);
+      });
     },
   }
 }
