@@ -28,3 +28,28 @@
     }
   }
 }
+
+.menu-ingredients-container {
+  .layout {
+    margin-bottom: .25rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .input-group {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  input {
+    text-align: right;
+  }
+
+  .ingredient-price {
+    line-height: 2rem;
+    margin-top: .25rem;
+    text-align: right;
+  }
+}

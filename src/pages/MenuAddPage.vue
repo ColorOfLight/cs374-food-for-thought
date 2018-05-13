@@ -4,9 +4,20 @@
       v-text-field(name="name" label="메뉴 이름" value="" placeholder="아메리카노")
       .detail-item-group
         label 재료 선택 및 양 입력하기
-        .btn-container
+        .menu-ingredients-container(v-if="Object.keys(ingredients).length > 0")
+          v-layout
+            v-flex.left(xs9)
+              v-text-field(name="ingredientSFDS" prefix="물" suffix=" ml" hide-details)
+            v-flex.right(xs3)
+              .ingredient-price 500 원
+          v-layout
+            v-flex.left(xs9)
+              v-text-field(name="ingredientSFDS" prefix="물" suffix=" ml" hide-details)
+            v-flex.right(xs3)
+              .ingredient-price 500 원
+        .btn-container(v-else)
           v-btn.btn-select-ingredient(color="primary" outline) 재료 선택하기
-        //- TODO: 재료 있을 때 화면 추가하기
+       
         .menu-detail-price-container
           v-layout
             v-flex.left(xs6)
@@ -23,7 +34,13 @@
 
 <script>
 export default {
-
+  data () {
+    return {
+      ingredients: {
+        SFDS: 20 
+      }
+    }
+  }
 }
 </script>
 
