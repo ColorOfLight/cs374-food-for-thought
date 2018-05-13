@@ -1,11 +1,11 @@
 <template lang="pug">
-  .menu-list-page
-    template(v-if="Object.keys(menus).length > 0")
+  .menu-list-page(v-if="isFirebaseLoaded")
+    template(v-if="Object.keys(prettyMenus).length > 0")
       .menu-list-container
-        .menu-list-item(v-for="(menu, key) in menus")
+        .menu-list-item(v-for="(menu, key) in prettyMenus")
           .menu-list-title {{menu.name}}
           .menu-list-sub {{menu.ingredients}}
-          .menu-list-price {{menu.consumerPrice}}
+          .menu-list-price {{menu.price}}
       .btn-container
         v-btn.btn-new-menu(color="primary" outline @click="$router.push({name: 'MenuAdd'})")
           v-icon.add-icon add
@@ -16,8 +16,9 @@
 <script>
 import ListEmptyContainer from '@/components/ListEmptyContainer'
 import Vue from 'vue'
-import db from '@/libs/vuefireConfig.js'
 import VueFire from 'vuefire'
+import db from '@/libs/vuefireConfig.js'
+import { convertToMoneyString } from '@/libs/stringUtils'
 
 Vue.use(VueFire)
 
@@ -30,7 +31,7 @@ export default {
       source: db.ref('/menus/'),
       asObject: true,
       readyCallback: function() {
-        
+        this.isFirebaseLoaded = true
       }
     }
   },
@@ -38,15 +39,28 @@ export default {
     return {
       buttonText: '새 메뉴 추가하기',
       menus: this.$firebaseRefs ? this.$firebaseRefs.menus : null,
-      // {
-      //   sXZDFD: {
-      //     name: '아메리카노',
-      //     ingredients: ['물', '원두'],
-      //     consumerPrice: 3000
-      //   }
-      // }
+      isFirebaseLoaded: false,
     }
-  }
+  },
+  computed: {
+    prettyMenus: function () {
+      if (this.menus) {
+        let newMenus = {};
+        for (const key of Object.keys(this.menus)) {
+          if (key === '.key') continue;
+          const menu = this.menus[key];
+          newMenus[key] = {
+            name: menu.name,
+            ingredients: Object.keys(menu.ingredients).join(', '),
+            price: convertToMoneyString(menu.consumerPrice)
+          }
+        }
+        return newMenus;
+      } else {
+        return null;
+      }
+    }
+  },
 }
 </script>
 
@@ -70,10 +84,21 @@ export default {
     background-color: $primary-50;
   }
 
+  .menu-list-title {
+    overflow: hidden;
+    padding-right: 30%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   .menu-list-sub {
     color: $gray-500;
     font-size: .75rem;
     margin-top: .125rem;
+    overflow: hidden;
+    padding-right: 30%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .menu-list-price {
