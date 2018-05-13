@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import db from '@/libs/vuefireConfig.js'
+
 export default {
   data () {
     return {
@@ -23,7 +25,43 @@ export default {
   },
   methods: {
     submitForm () {
-      // TODO: connect with Firebase
+      /* Exception handling */
+      if(this.form['amount'] == null){
+        /* TODO: Tell user that this something is missing */
+        console.log('amount is missing...')
+        return;
+      }
+      else if(this.form['name'] == null){
+        console.log('name is missing...')
+        return;
+      }
+      else if(this.form['price'] == null){
+        console.log('price is missing...')
+        return;
+      }
+      else if(this.form['storeName'] == null){
+        console.log('store name is missing...')
+        return;
+      }
+      else if(this.form['unit'] == null){
+        console.log('unit is missing...')
+        return;
+      }
+
+      let newkey = db.ref('/ingredients/').push().key;
+      let updateData = {
+        amount: this.form['amount'],
+        name: this.form['name'],
+        price: this.form['price'],
+        storeName: this.form['storeName'],
+        unit: this.form['unit'].split(' ')[0],
+        createdTimestamp: new Date()
+      };
+      let self = this;
+      db.ref('/ingredients/' + newkey).update(updateData).then(function() {
+        console.log(updateData);
+        self.$router.go(-1);
+      });
     },
   }
 }
