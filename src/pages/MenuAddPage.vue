@@ -16,7 +16,7 @@
             v-flex.right(xs3)
               .ingredient-price 500 원
         .btn-container(v-else)
-          v-btn.btn-select-ingredient(color="primary" outline) 재료 선택하기
+          v-btn.btn-select-ingredient(color="primary" outline @click="$router.push({name: 'IngredientSelect'})") 재료 선택하기
        
         .menu-detail-price-container
           v-layout
@@ -30,6 +30,7 @@
             v-flex.left(xs6)
               label 예상 이윤
               .text - 원
+    v-btn.btn-bottom-fixed(:disabled = "isbtnDisabled" color="primary" @click="submitForm()") 추가하기
 </template>
 
 <script>
@@ -37,9 +38,29 @@ export default {
   data () {
     return {
       ingredients: {
-        SFDS: 20 
-      }
+        // SFDS: 20 
+      },
+      form: {},
+      isbtnDisabled: true
     }
+  },
+  methods: {
+    submitForm () {
+      // let newkey = db.ref('/ingredients/').push().key;
+      // let updateData = {
+      //   amount: this.form['amount'],
+      //   name: this.form['name'],
+      //   price: this.form['price'],
+      //   storeName: this.form['storeName'],
+      //   productName: this.form['productName'],
+      //   unit: this.form['unit'].split(' ')[0],
+      //   createdTimestamp: new Date()
+      // };
+      // let self = this;
+      // db.ref('/ingredients/' + newkey).update(updateData).then(function() {
+      //   self.$router.go(-1);
+      // });
+    },
   }
 }
 </script>

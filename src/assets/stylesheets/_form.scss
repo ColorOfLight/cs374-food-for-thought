@@ -3,3 +3,13 @@
     margin-top: .25rem;
   }
 }
+
+.ingredient-select-item {
+  .input-group .input-group__input {
+    margin-top: 0;
+  }
+
+  label {
+    padding-left: .25rem;
+  }
+}
