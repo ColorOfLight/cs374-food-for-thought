@@ -1,14 +1,14 @@
 <template lang="pug">
   .empty-list-container
       .empty-list-text {{text}}
-      v-btn.btn-new-menu(color="primary" outline)
+      v-btn.btn-new-menu(color="primary" outline @click="router.push({name: clickRouteName})")
         v-icon.add-icon add
         | {{buttonText}}
 </template>
 
 <script>
 export default {
-  props: ['text', 'buttonText']
+  props: ['text', 'buttonText', 'clickRouteName']
 }
 </script>
 

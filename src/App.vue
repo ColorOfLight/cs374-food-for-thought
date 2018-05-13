@@ -40,7 +40,10 @@ html {
 
 @include above-sm {
   .app {
+    border-left: 1px solid $border-color;
+    border-right: 1px solid $border-color;
     margin: 0 auto;
+    overflow: hidden;
     width: 480px;
   }
 }

@@ -7,10 +7,10 @@
           .menu-list-sub {{menu.ingredients}}
           .menu-list-price {{menu.consumerPrice}}
       .btn-container
-        v-btn.btn-new-menu(color="primary" outline)
+        v-btn.btn-new-menu(color="primary" outline @click="$router.push({name: 'MenuAdd'})")
           v-icon.add-icon add
           | {{buttonText}}
-    empty-list-container(v-else text="새 메뉴를 추가하고 원가를 확인해보세요!" :buttonText="buttonText")
+    empty-list-container(v-else text="새 메뉴를 추가하고 원가를 확인해보세요!" :buttonText="buttonText" :clickRouteName="IngredientAdd")
 </template>
 
 <script>
