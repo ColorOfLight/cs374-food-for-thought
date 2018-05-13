@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     checkValidity (val) {
-      if (this.form['amount'] && this.form['name'] && this.form['price'] && this.form['storeName'] && this.form['unit'] && this.form['productName']) this.isbtnDisabled = false;
+      if (this.form['amount'] != 0 && this.form['amount'] && this.form['name'] && this.form['price'] && this.form['storeName'] && this.form['unit'] && this.form['productName']) this.isbtnDisabled = false;
       else this.isbtnDisabled = true;
     },
     submitForm () {
