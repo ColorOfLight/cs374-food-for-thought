@@ -6,3 +6,25 @@
     font-size: .75rem;
   }
 }
+
+.menu-detail-price-container {
+  margin-top: 2.25rem;
+  label {
+    font-size: 1rem;
+  }
+  .text {
+    font-size: 1.5rem;
+    margin-top: .5rem;
+    line-height: 2rem;
+  }
+  .input-group {
+    margin: 0 !important;
+    padding: 0 !important;
+
+    input,
+    .input-group--text-field__suffix {
+      font-size: 1.5rem;
+      height: 2.5rem;
+    }
+  }
+}
