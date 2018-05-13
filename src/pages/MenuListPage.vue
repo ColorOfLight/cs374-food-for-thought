@@ -15,21 +15,36 @@
 
 <script>
 import ListEmptyContainer from '@/components/ListEmptyContainer'
+import Vue from 'vue'
+import db from '@/libs/vuefireConfig.js'
+import VueFire from 'vuefire'
+
+Vue.use(VueFire)
 
 export default {
   components: {
     'empty-list-container': ListEmptyContainer
   },
+  firebase: {
+    menus: {
+      source: db.ref('/menus/'),
+      asObject: true,
+      readyCallback: function() {
+        
+      }
+    }
+  },
   data () {
     return {
       buttonText: '새 메뉴 추가하기',
-      menus: {
-        sXZDFD: {
-          name: '아메리카노',
-          ingredients: ['물', '원두'],
-          consumerPrice: 3000
-        }
-      }
+      menus: this.$firebaseRefs ? this.$firebaseRefs.menus : null,
+      // {
+      //   sXZDFD: {
+      //     name: '아메리카노',
+      //     ingredients: ['물', '원두'],
+      //     consumerPrice: 3000
+      //   }
+      // }
     }
   }
 }
