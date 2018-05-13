@@ -2,7 +2,7 @@
   .menu-list-page(v-if="isFirebaseLoaded")
     template(v-if="Object.keys(prettyMenus).length > 0")
       .menu-list-container
-        .menu-list-item(v-for="(menu, key) in prettyMenus")
+        .menu-list-item(v-for="(menu, key) in prettyMenus" @click="$router.push({name: 'MenuDetail', params: {menuKey: key}})")
           .menu-list-title {{menu.name}}
           .menu-list-sub {{menu.ingredients}}
           .menu-list-price {{menu.price}}

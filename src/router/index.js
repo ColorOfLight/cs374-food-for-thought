@@ -44,12 +44,12 @@ export default new Router({
       component: IngredientAddPage
     },
     {
-      path: '/menu',
+      path: '/menus/add',
       name: 'MenuAdd',
       component: MenuAddPage
     },
     {
-      path: '/menu-detail',
+      path: '/menus/:menuKey',
       name: 'MenuDetail',
       component: MenuDetailPage
     },
