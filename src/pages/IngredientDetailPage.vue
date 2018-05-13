@@ -52,14 +52,4 @@ export default {
   margin-bottom: -.5rem;
   margin-top: 1rem;
 }
-
-.flex {
-  &.left {
-    margin-right: 1rem;
-  }
-
-  &.right {
-    margin-left: 1rem;
-  }
-}
 </style>
