@@ -26,31 +26,29 @@ export default {
   },
   watch: {
     "form.amount": function (val) {
-      if (this.form['amount'] && this.form['name'] && this.form['price'] && this.form['storeName'] && this.form['unit'] && this.form['productName']) this.isbtnDisabled = false;
-      else this.isbtnDisabled = true;
+      this.checkValidity(val);
     },
     "form.name": function (val) {
-      if (this.form['amount'] && this.form['name'] && this.form['price'] && this.form['storeName'] && this.form['unit'] && this.form['productName']) this.isbtnDisabled = false;
-      else this.isbtnDisabled = true;
+      this.checkValidity(val);
     },
     "form.price": function (val) {
-      if (this.form['amount'] && this.form['name'] && this.form['price'] && this.form['storeName'] && this.form['unit'] && this.form['productName']) this.isbtnDisabled = false;
-      else this.isbtnDisabled = true;
+      this.checkValidity(val);
     },
     "form.storeName": function (val) {
-      if (this.form['amount'] && this.form['name'] && this.form['price'] && this.form['storeName'] && this.form['unit'] && this.form['productName']) this.isbtnDisabled = false;
-      else this.isbtnDisabled = true;
+      this.checkValidity(val);
     },
     "form.unit": function (val) {
-      if (this.form['amount'] && this.form['name'] && this.form['price'] && this.form['storeName'] && this.form['unit'] && this.form['productName']) this.isbtnDisabled = false;
-      else this.isbtnDisabled = true;
+      this.checkValidity(val);
     },
     "form.productName": function (val) {
-      if (this.form['amount'] && this.form['name'] && this.form['price'] && this.form['storeName'] && this.form['unit'] && this.form['productName']) this.isbtnDisabled = false;
-      else this.isbtnDisabled = true;
+      this.checkValidity(val);
     }
   },
   methods: {
+    checkValidity (val) {
+      if (this.form['amount'] && this.form['name'] && this.form['price'] && this.form['storeName'] && this.form['unit'] && this.form['productName']) this.isbtnDisabled = false;
+      else this.isbtnDisabled = true;
+    },
     submitForm () {
       let newkey = db.ref('/ingredients/').push().key;
       let updateData = {
