@@ -23,8 +23,7 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'Vuetify.js',
-      test: this.$firebaseRefs
+      title: 'Vuetify.js'
     }
   },
   name: 'App'
