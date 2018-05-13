@@ -1,39 +1,62 @@
 <template lang="pug">
-  .ingredient-list-page
+  .ingredient-list-page(v-if="isFirebaseLoaded")
     template(v-if="Object.keys(ingredients).length > 0")
       .btn-container
         v-btn.btn-new-ingredient(color="primary" outline @click="$router.push({name: 'IngredientAdd'})")
           v-icon.add-icon add
           | {{buttonText}}
       .ingredient-list-container
-        .ingredient-list-item(v-for="(ingredient, key) in ingredients")
+        .ingredient-list-item(v-for="(ingredient, key) in prettyIngredients")
           .ingredient-title {{ingredient.name}}
-          .ingredient-unit {{`${ingredient.unitPrice} 원 / ${ingredient.unit}`}}
+          .ingredient-unit {{`${ingredient.price} / ${ingredient.unit}`}}
     empty-list-container(v-else text="메뉴에 들어갈 재료들을 추가해주세요!" :buttonText="buttonText" clickRouteName="IngredientAdd")
+  spinner(v-else)
 </template>
 
 <script>
 import ListEmptyContainer from '@/components/ListEmptyContainer'
+import Spinner from '@/components/Spinner'
+import db from '@/libs/vuefireConfig.js'
+import { convertToMoneyString } from '@/libs/stringUtils'
 
 export default {
   components: {
     'empty-list-container': ListEmptyContainer,
+    'spinner': Spinner,
+  },
+  firebase: {
+    ingredients: {
+      source: db.ref('/ingredients/'),
+      asObject: true,
+      readyCallback: function() {
+        this.isFirebaseLoaded = true
+      }
+    }
   },
   data () {
     return {
       buttonText: '재료 추가하기',
-      ingredients: {
-        'tt': {
-          name: '물',
-          unit: 'ml',
-          unitPrice: 1
-        },
-        'taat': {
-          name: '물',
-          unit: 'ml',
-          unitPrice: 1
-        },
-      },
+      isFirebaseLoaded: false,
+      ingredients: this.$firebaseRefs ? this.$firebaseRefs.ingredients : null,
+    }
+  },
+  computed: {
+    prettyIngredients: function () {
+      if (this.ingredients) {
+        let newIngredients = {};
+        for (const key of Object.keys(this.ingredients)) {
+          if (key === '.key') continue;
+          const ingredient = this.ingredients[key];
+          newIngredients[key] = {
+            name: ingredient.name,
+            price: convertToMoneyString(ingredient.price / ingredient.amount, 1),
+            unit: ingredient.unit
+          }
+        }
+        return newIngredients;
+      } else {
+        return null;
+      }
     }
   },
 }
@@ -75,6 +98,13 @@ export default {
     &:last-child {
       border-bottom: 0;
     }
+  }
+
+  .ingredient-title {
+    overflow: hidden;
+    padding-right: 40%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .ingredient-unit {
