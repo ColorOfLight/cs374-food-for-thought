@@ -17,10 +17,22 @@
 import db from '@/libs/vuefireConfig.js'
 
 export default {
+  created () {
+    if(this.$route.params.ingredientKey){
+      this.$bindAsObject('defaultData', db.ref('/ingredients/' + this.$route.params.ingredientKey), null, () => {
+        this.form = this.defaultData
+        for(let i = 0; i < this.units.length; i++){
+          let unitSymbol = this.units[i].split(" ")[0];
+          if(unitSymbol === this.defaultData.unit) this.form.unit = this.units[i];
+        }
+      })
+    }
+
+  },
   data () {
     return {
       units: ['g (무게)', 'ml (부피)', '개 (개수)'],
-      form: {},
+      form: {name : "", storeName : "", productName : "", amount : "", unit: "", price : ""},
       isbtnDisabled: true
     }
   },
@@ -50,7 +62,8 @@ export default {
       else this.isbtnDisabled = true;
     },
     submitForm () {
-      let newkey = db.ref('/ingredients/').push().key;
+      let key = this.$route.params.ingredientKey;
+      if(!this.$route.params.ingredientKey) key = db.ref('/ingredients/').push().key;
       let updateData = {
         amount: this.form['amount'],
         name: this.form['name'],
@@ -61,7 +74,7 @@ export default {
         createdTimestamp: new Date()
       };
       let self = this;
-      db.ref('/ingredients/' + newkey).update(updateData).then(function() {
+      db.ref('/ingredients/' + key).update(updateData).then(function() {
         self.$router.go(-1);
       });
     },
