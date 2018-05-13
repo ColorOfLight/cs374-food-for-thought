@@ -61,8 +61,6 @@ export default {
             if(this.ingredients[ingredKeys[i]]) ingredNames.push(this.ingredients[ingredKeys[i]]["name"])
           }
 
-          console.log(ingredNames)
-
           newMenus[key] = {
             name: menu.name,
             ingredients: ingredNames.join(', '),
