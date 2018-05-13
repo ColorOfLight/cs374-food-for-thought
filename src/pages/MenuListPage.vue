@@ -11,10 +11,12 @@
           v-icon.add-icon add
           | {{buttonText}}
     empty-list-container(v-else text="새 메뉴를 추가하고 원가를 확인해보세요!" :buttonText="buttonText" clickRouteName="IngredientAdd")
+  spinner(v-else)
 </template>
 
 <script>
 import ListEmptyContainer from '@/components/ListEmptyContainer'
+import Spinner from '@/components/spinner'
 import Vue from 'vue'
 import VueFire from 'vuefire'
 import db from '@/libs/vuefireConfig.js'
@@ -24,7 +26,8 @@ Vue.use(VueFire)
 
 export default {
   components: {
-    'empty-list-container': ListEmptyContainer
+    'empty-list-container': ListEmptyContainer,
+    'spinner': Spinner,
   },
   firebase: {
     menus: {
