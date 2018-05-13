@@ -3,30 +3,36 @@
     .inputs-container
       .detail-item-group
         label 재료 이름
-        .text 초콜릿 시럽
+        .text {{data.name}}
       .detail-item-group
         label 거래처 이름
-        .text 홈플러스 유성점
+        .text {{data.storeName}}
       .detail-item-group
         label 제품명
-        .text 기라델리 초콜릿 소스 스퀴즈 보틀
+        .text {{data.productName}}
       v-layout
         v-flex.left(xs-6)
           .detail-item-group
             label 용량
-            .text 454 g
+            .text {{convertedAmount}}
         v-flex.right(xs-6)
           .detail-item-group
             label 가격
-            .text 9,580 원
+            .text {{convertedPrice}}
       .detail-item-group
         label 단위 용량당 가격
-        .text 21.1 원
+        .text {{convertedUnitPrice}}
     v-btn.btn-bottom-fixed(color="primary" @click="$router.push(editRoute)") 편집하기
 </template>
 
 <script>
+import db from '@/libs/vuefireConfig.js'
+import { convertToMoneyString } from '@/libs/stringUtils'
+
 export default {
+  created () {
+    this.$bindAsObject('data', db.ref('/ingredients/' + this.$route.params.ingredientKey))
+  },
   data () {
     return {
       units: ['g (무게)', 'ml (부피)', '개 (개수)'],
@@ -36,6 +42,17 @@ export default {
           ingredientKey: this.$route.params.ingredientKey
         }
       },
+    }
+  },
+  computed: {
+    convertedPrice: function () {
+      return this.data['price'] == null ? null : convertToMoneyString(this.data['price']);
+    },
+    convertedUnitPrice: function () {
+      return this.data['price'] == null ? null : convertToMoneyString(this.data['price'] / this.data['amount'])
+    },
+    convertedAmount: function () {
+      return this.data['amount'] == null? null : this.data['amount'] + ' ' + this.data['unit']
     }
   }
 }
