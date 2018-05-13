@@ -2,14 +2,18 @@
   .ingredient-list-page(v-if="isFirebaseLoaded")
     template(v-if="Object.keys(ingredients).length > 0")
       .btn-container
-        v-btn.btn-new-ingredient(color="primary" outline @click="$router.push({name: 'IngredientAdd'})")
+        v-btn.btn-new-ingredient(v-if="$route.name === 'IngredientList'" color="primary" outline @click="$router.push({name: 'IngredientAdd'})")
           v-icon.add-icon add
           | {{buttonText}}
-      .ingredient-list-container
+      .ingredient-list-container(v-if="$route.name === 'IngredientList'")
         .ingredient-list-item(v-for="(ingredient, key) in prettyIngredients" @click="$router.push({name: 'IngredientDetail', params: {ingredientKey: key}})")
           .ingredient-title {{ingredient.name}}
           .ingredient-unit {{`${ingredient.price} / ${ingredient.unit}`}}
+      .ingredient-list-container(v-else-if="$route.name === 'IngredientSelect'")
+        .ingredient-select-item(v-for="(ingredient, key) in prettyIngredients")
+          v-checkbox(:label="ingredient.name" color="primary" v-model="selections[key]" hide-details)
     empty-list-container(v-else text="메뉴에 들어갈 재료들을 추가해주세요!" :buttonText="buttonText" clickRouteName="IngredientAdd")
+    v-btn.btn-bottom-fixed(v-if="$route.name === 'IngredientSelect'" :disabled = "isbtnDisabled" color="primary" @click="submitForm()") 재료 추가하기
   spinner(v-else)
 </template>
 
@@ -38,6 +42,8 @@ export default {
       buttonText: '재료 추가하기',
       isFirebaseLoaded: false,
       ingredients: this.$firebaseRefs ? this.$firebaseRefs.ingredients : null,
+      selections: {},
+      isbtnDisabled: true
     }
   },
   computed: {
@@ -113,6 +119,15 @@ export default {
     font-size: .9rem;
     position: absolute;
     right: 1.5rem;
+  }
+
+  .ingredient-select-item {
+    padding: .5rem 1rem .25rem;
+    border-bottom: 1px solid $border-color;
+
+    .checkbox {
+      height: 2.25rem;
+    }
   }
 }
 </style>

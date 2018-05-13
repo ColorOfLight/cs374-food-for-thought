@@ -16,7 +16,8 @@ import {
   transitions,
   VSubheader,
   VTextField,
-  VSelect
+  VSelect,
+  VCheckbox
 } from 'vuetify'
 import VueFire from 'vuefire'
 import './stylus/main.styl'
@@ -36,7 +37,8 @@ Vue.use(Vuetify, {
     transitions,
     VSubheader,
     VTextField,
-    VSelect
+    VSelect,
+    VCheckbox
   },
   theme: {
     primary: '#f44336'

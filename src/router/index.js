@@ -28,6 +28,11 @@ export default new Router({
       component: IngredientAddPage
     },
     {
+      path: '/ingredients/select',
+      name: 'IngredientSelect',
+      component: IngredientListPage
+    },
+    {
       path: '/ingredients/:ingredientKey',
       name: 'IngredientDetail',
       component: IngredientDetailPage
