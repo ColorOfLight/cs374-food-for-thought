@@ -1,7 +1,7 @@
 <template lang="pug">
   .page-container.menu-add-page
     .inputs-container
-      v-text-field(name="name" label="메뉴 이름" value="" placeholder="아메리카노")
+      v-text-field(name="name" label="메뉴 이름" v-model="form.name" placeholder="아메리카노")
       .detail-item-group
         label 재료 선택 및 양 입력하기
         .menu-ingredients-container(v-if="Object.keys(ingredients).length > 0")
@@ -25,7 +25,7 @@
               .text 1,650 원
             v-flex.right(xs6)
               label 희망 소비자 가격
-              v-text-field(name="consumerPrice" value="" placeholder="0" suffix=" 원")
+              v-text-field(name="consumerPrice" type="number" placeholder="0" suffix=" 원" v-model="form.consumerPrice")
           v-layout
             v-flex.left(xs6)
               label 예상 이윤
@@ -40,8 +40,20 @@ export default {
       ingredients: {
         // SFDS: 20 
       },
-      form: {},
+      form: {
+        name: this.$store.state.temporaryMenu.name ? this.$store.state.temporaryMenu.name : '',
+        ingredients: this.$store.state.temporaryMenu.ingredients ? this.$store.state.temporaryMenu.ingredients : {},
+        consumerPrice: this.$store.state.temporaryMenu.consumerPrice ? this.$store.state.temporaryMenu.consumerPrice : '',
+      },
       isbtnDisabled: true
+    }
+  },
+  watch: {
+    'form.name': function (name) {
+      this.$store.commit('setTemporaryMenu', {name})
+    },
+    'form.consumerPrice': function (consumerPrice) {
+      this.$store.commit('setTemporaryMenu', {consumerPrice})
     }
   },
   methods: {
@@ -61,7 +73,13 @@ export default {
       //   self.$router.go(-1);
       // });
     },
-  }
+  },
+  beforeRouteLeave (to, from, next) {
+    if (!(to.name === 'IngredientSelect')) {
+      this.$store.commit('resetTemporaryMenu');
+    }
+    next();
+  },
 }
 </script>
 

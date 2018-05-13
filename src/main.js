@@ -20,6 +20,7 @@ import {
   VCheckbox
 } from 'vuetify'
 import VueFire from 'vuefire'
+import store from '@/store/index'
 import './stylus/main.styl'
 
 
@@ -51,6 +52,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })
