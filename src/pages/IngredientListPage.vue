@@ -6,7 +6,7 @@
           v-icon.add-icon add
           | {{buttonText}}
       .ingredient-list-container
-        .ingredient-list-item(v-for="(ingredient, key) in prettyIngredients")
+        .ingredient-list-item(v-for="(ingredient, key) in prettyIngredients" @click="$router.push({name: 'IngredientDetail', params: {ingredientKey: key}})")
           .ingredient-title {{ingredient.name}}
           .ingredient-unit {{`${ingredient.price} / ${ingredient.unit}`}}
     empty-list-container(v-else text="메뉴에 들어갈 재료들을 추가해주세요!" :buttonText="buttonText" clickRouteName="IngredientAdd")

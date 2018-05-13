@@ -22,14 +22,20 @@
       .detail-item-group
         label 단위 용량당 가격
         .text 21.1 원
-    v-btn.btn-bottom-fixed(color="primary") 추가하기
+    v-btn.btn-bottom-fixed(color="primary" @click="$router.push(editRoute)") 편집하기
 </template>
 
 <script>
 export default {
   data () {
     return {
-      units: ['g (무게)', 'ml (부피)', '개 (개수)']
+      units: ['g (무게)', 'ml (부피)', '개 (개수)'],
+      editRoute: {
+        name: 'IngredientEdit',
+        params: {
+          ingredientKey: this.$route.params.ingredientKey
+        }
+      },
     }
   }
 }
