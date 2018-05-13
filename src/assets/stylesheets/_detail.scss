@@ -9,13 +9,23 @@
 
 .menu-detail-price-container {
   margin-top: 2.25rem;
+
   label {
     font-size: 1rem;
   }
+
+  .layout {
+    margin-bottom: 2rem;
+  }
+
   .text {
     font-size: 1.5rem;
-    margin-top: .5rem;
+    margin-top: .25rem;
     line-height: 2rem;
+
+    &.primary-text {
+      color: $primary !important;
+    }
   }
   .input-group {
     margin: 0 !important;
@@ -48,8 +58,21 @@
   }
 
   .ingredient-price {
+    color: $primary;
     line-height: 2rem;
     margin-top: .25rem;
     text-align: right;
+  }
+
+  .ingredient-wrapper {
+    line-height: 2rem;
+    margin-top: .25rem;
+    position: relative;
+
+    .amount {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
   }
 }
