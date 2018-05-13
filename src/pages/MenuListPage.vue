@@ -54,18 +54,18 @@ export default {
           if (key === '.key') continue;
           const menu = this.menus[key];
 
-          // let ingredKeys = Object.keys(menu.ingredients);
-          // let ingredNames = [];
-          //
-          // for(let i = 0 ; i < ingredKeys.length; i++) {
-          //   ingredNames.push(this.ingredients[ingredKeys[i]]["name"])
-          // }
+          let ingredKeys = Object.keys(menu.ingredients);
+          let ingredNames = [];
+
+          for(let i = 0 ; i < ingredKeys.length; i++) {
+            if(this.ingredients[ingredKeys[i]]) ingredNames.push(this.ingredients[ingredKeys[i]]["name"])
+          }
 
           console.log(ingredNames)
 
           newMenus[key] = {
             name: menu.name,
-            ingredients: Object.keys(menu.ingredients).join(', '),
+            ingredients: ingredNames.join(', '),
             price: convertToMoneyString(menu.consumerPrice)
           }
         }
