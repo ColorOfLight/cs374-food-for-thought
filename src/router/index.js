@@ -20,10 +20,10 @@ export default new Router({
     {
       path: '/ingredients',
       name: 'IngredientList',
-      component: IngredientListPage
+      component: IngredientListPage,
     },
     {
-      path: '/ingredient',
+      path: '/ingredients/add',
       name: 'IngredientAdd',
       component: IngredientAddPage
     },

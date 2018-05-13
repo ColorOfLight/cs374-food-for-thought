@@ -21,7 +21,8 @@
 export default {
   data () {
     return {
-      drawer: false
+      drawer: false,
+      test: this.$firebaseRefs
     }
   },
   methods: {
@@ -51,7 +52,12 @@ export default {
 }
 
 .navigation-drawer {
+  transform: translateX(-100%) !important;
   width: 75% !important;
+}
+
+.navigation-drawer--temporary:not(.navigation-drawer--close) {
+  transform: translateX(0) !important;
 }
 
 .list {
