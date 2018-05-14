@@ -49,7 +49,7 @@ export default {
       return this.data['price'] == null ? null : convertToMoneyString(this.data['price']);
     },
     convertedUnitPrice: function () {
-      return this.data['price'] == null ? null : convertToMoneyString(this.data['price'] / this.data['amount'])
+      return this.data['price'] == null ? null : convertToMoneyString(this.data['price'] / this.data['amount'], 1);
     },
     convertedAmount: function () {
       return this.data['amount'] == null? null : this.data['amount'] + ' ' + this.data['unit']
