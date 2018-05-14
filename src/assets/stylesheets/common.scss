@@ -2,7 +2,9 @@
 
 @import 'fonts';
 
-@import 'global';
-@import 'button';
-@import 'form';
-@import 'detail';
+#app {
+  @import 'global';
+  @import 'button';
+  @import 'form';
+  @import 'detail';
+}
