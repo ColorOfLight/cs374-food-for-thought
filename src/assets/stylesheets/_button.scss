@@ -8,6 +8,10 @@
   right: 0;
   width: 100%;
 
+  &[disabled] {
+    background-color: $gray-300 !important;
+  }
+
   @include above-sm {
     margin: 0 auto;
     width: 480px;
