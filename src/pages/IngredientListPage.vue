@@ -21,7 +21,7 @@
 import ListEmptyContainer from '@/components/ListEmptyContainer'
 import Spinner from '@/components/Spinner'
 import db from '@/libs/vuefireConfig.js'
-import { convertToMoneyString } from '@/libs/stringUtils'
+import { convertToMoneyString } from '@/libs/StringUtils'
 
 export default {
   components: {
@@ -33,7 +33,7 @@ export default {
       source: db.ref('/ingredients/'),
       asObject: true,
       readyCallback: function() {
-        this.isFirebaseLoaded = true
+        this.isFirebaseLoaded = true;
       }
     }
   },
@@ -44,6 +44,16 @@ export default {
       ingredients: this.$firebaseRefs ? this.$firebaseRefs.ingredients : null,
       selections: {},
       isbtnDisabled: false
+    }
+  },
+  watch: {
+    ingredients: function (val) {
+      let ingredients = {};
+      for (const key of Object.keys(val)) {
+        if (key === '.key') continue;
+        ingredients[key] = val[key];
+      }
+      this.$store.commit('setIngredients', ingredients);
     }
   },
   computed: {
@@ -77,7 +87,7 @@ export default {
       }
       this.$store.commit('setTemporaryMenu', {ingredients});
       this.$router.go(-1);
-    }
+    },
   },
 }
 </script>

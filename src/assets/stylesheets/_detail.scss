@@ -75,4 +75,12 @@
       top: 0;
     }
   }
+
+  .primary-text {
+    color: $primary;
+  }
+
+  .uninputted {
+    color: $gray-400 !important;
+  }
 }

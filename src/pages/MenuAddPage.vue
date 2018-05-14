@@ -4,75 +4,124 @@
       v-text-field(name="name" label="메뉴 이름" v-model="form.name" placeholder="아메리카노")
       .detail-item-group
         label 재료 선택 및 양 입력하기
-        .menu-ingredients-container(v-if="Object.keys(ingredients).length > 0")
-          v-layout
+        .menu-ingredients-container(v-if="Object.keys(prettyInfos.ingredients).length > 0")
+          v-layout(v-for="(ingred, key) in prettyInfos.ingredients" :key="key")
             v-flex.left(xs9)
-              v-text-field(name="ingredientSFDS" prefix="물" suffix=" ml" hide-details)
+              v-text-field(name="ingredientSFDS" :prefix="ingred.name" :suffix="ingred.unit" v-model="form.ingredients[key]" hide-details)
             v-flex.right(xs3)
-              .ingredient-price 500 원
-          v-layout
-            v-flex.left(xs9)
-              v-text-field(name="ingredientSFDS" prefix="물" suffix=" ml" hide-details)
-            v-flex.right(xs3)
-              .ingredient-price 500 원
+              .ingredient-price(:class="{uninputted: ingred.productionPrice === 0}") {{ingred.productionPriceText}}
         .btn-container(v-else)
           v-btn.btn-select-ingredient(color="primary" outline @click="$router.push({name: 'IngredientSelect'})") 재료 선택하기
-       
         .menu-detail-price-container
           v-layout
             v-flex.left(xs6)
               label 예상 단가
-              .text 1,650 원
+              .text.primary-text(:class="{uninputted: prettyInfos.expectedPrice === 0}") {{prettyInfos.totalPriceText}}
             v-flex.right(xs6)
               label 희망 소비자 가격
               v-text-field(name="consumerPrice" type="number" placeholder="0" suffix=" 원" v-model="form.consumerPrice")
           v-layout
             v-flex.left(xs6)
               label 예상 이윤
-              .text - 원
-    v-btn.btn-bottom-fixed(:disabled = "isbtnDisabled" color="primary" @click="submitForm()") 추가하기
+              .text.primary-text(:class="{uninputted: prettyInfos.expectedProfit === 0}") {{prettyInfos.profitText}}
+    v-btn.btn-bottom-fixed(:disabled ="isBtnDisabled" color="primary" @click="submitForm()") 추가하기
 </template>
 
 <script>
+import db from '@/libs/vuefireConfig.js'
+import { convertToMoneyString } from '@/libs/StringUtils'
+
 export default {
   data () {
     return {
-      ingredients: {
-        // SFDS: 20 
-      },
       form: {
         name: this.$store.state.temporaryMenu.name ? this.$store.state.temporaryMenu.name : '',
         ingredients: this.$store.state.temporaryMenu.ingredients ? this.$store.state.temporaryMenu.ingredients : {},
         consumerPrice: this.$store.state.temporaryMenu.consumerPrice ? this.$store.state.temporaryMenu.consumerPrice : '',
       },
-      isbtnDisabled: true
+      isBtnDisabled: true,
+    }
+  },
+  computed: {
+    prettyInfos () {
+      let prettyIngreds = {};
+      let expectedPrice = 0;
+      let expectedProfit = 0;
+      const storedIngreds = this.$store.state.ingredients;
+      const selectedIngreds = this.$store.state.temporaryMenu.ingredients ? this.$store.state.temporaryMenu.ingredients : {};
+      for (const key of Object.keys(selectedIngreds)) {
+        let item = {};
+        item.name = storedIngreds[key].name;
+        item.unit = storedIngreds[key].unit;
+        item.productionPrice = this.calculateProductionPrice(storedIngreds[key].price, storedIngreds[key].amount, selectedIngreds[key]);
+        if (item.productionPrice > 0) item.productionPriceText = convertToMoneyString(item.productionPrice);
+        else item.productionPriceText = '- 원';
+        prettyIngreds[key] = (item);
+        expectedPrice += item.productionPrice;
+      }
+      if (this.form.consumerPrice) {
+        expectedProfit = parseInt(this.form.consumerPrice) - expectedPrice;
+      }
+      return {
+        ingredients: prettyIngreds,
+        totalPriceText: expectedPrice ? convertToMoneyString(expectedPrice) : "- 원",
+        profitText: expectedProfit ? convertToMoneyString(expectedProfit) : "- 원",
+      };  
+    },
+    expectProduction() {
     }
   },
   watch: {
+    'form': {
+      handler(form) {
+        let allIngredsInputted = true;
+        if (Object.keys(form.ingredients).length === 0) allIngredsInputted = false;
+        for (const key of Object.keys(form.ingredients)) {
+          if (!form.ingredients[key]) allIngredsInputted = false;
+        }
+        if (form.name && form.consumerPrice && allIngredsInputted) {
+          this.isBtnDisabled = false;
+        } else {
+          this.isBtnDisabled = true;
+        }
+      },
+      deep: true,
+    },
     'form.name': function (name) {
       this.$store.commit('setTemporaryMenu', {name})
     },
     'form.consumerPrice': function (consumerPrice) {
       this.$store.commit('setTemporaryMenu', {consumerPrice})
+    },
+    'form.ingredients': {
+      handler(ingredients) {
+        this.$store.commit('setTemporaryMenu', {ingredients})
+      },
+      deep: true,
     }
   },
   methods: {
     submitForm () {
-      // let newkey = db.ref('/ingredients/').push().key;
-      // let updateData = {
-      //   amount: this.form['amount'],
-      //   name: this.form['name'],
-      //   price: this.form['price'],
-      //   storeName: this.form['storeName'],
-      //   productName: this.form['productName'],
-      //   unit: this.form['unit'].split(' ')[0],
-      //   createdTimestamp: new Date()
-      // };
-      // let self = this;
-      // db.ref('/ingredients/' + newkey).update(updateData).then(function() {
-      //   self.$router.go(-1);
-      // });
+      let newkey = db.ref('/menus/').push().key;
+      let updateData = {
+        name: this.form.name,
+        ingredients: this.form.ingredients,
+        consumerPrice: this.form.consumerPrice,
+        createdTimestamp: new Date()
+      };
+      let self = this;
+      db.ref('/menus/' + newkey).update(updateData).then(function() {
+        self.$router.go(-1);
+      });
     },
+    calculateProductionPrice(price, amount, input) {
+      const numPrice = (typeof price === 'number') ? price : parseInt(price);
+      const numAmount = (typeof amount === 'number') ? amount : parseInt(amount);
+      const numInput = (typeof input === 'number') ? price : parseInt(input);
+      // TODO: amount === 0일 때 에러 처리
+      if (isNaN(numInput) || numAmount === 0) return 0;
+      return numPrice / numAmount * numInput;
+    }
   },
   beforeRouteLeave (to, from, next) {
     if (!(to.name === 'IngredientSelect')) {

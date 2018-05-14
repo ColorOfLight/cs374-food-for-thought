@@ -19,7 +19,7 @@ import ListEmptyContainer from '@/components/ListEmptyContainer'
 import Spinner from '@/components/Spinner'
 import Vue from 'vue'
 import db from '@/libs/vuefireConfig.js'
-import { convertToMoneyString } from '@/libs/stringUtils'
+import { convertToMoneyString } from '@/libs/StringUtils'
 
 export default {
   components: {

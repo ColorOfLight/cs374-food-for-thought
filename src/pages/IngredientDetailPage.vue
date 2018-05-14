@@ -27,7 +27,7 @@
 
 <script>
 import db from '@/libs/vuefireConfig.js'
-import { convertToMoneyString } from '@/libs/stringUtils'
+import { convertToMoneyString } from '@/libs/StringUtils'
 
 export default {
   created () {

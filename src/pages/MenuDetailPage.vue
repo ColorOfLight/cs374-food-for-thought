@@ -7,7 +7,7 @@
       .detail-item-group
         label 재료
         .menu-ingredients-container
-          v-layout(v-for="ingred in totalIngredients.prettyIngreds")
+          v-layout(v-for="(ingred, index) in totalIngredients.prettyIngreds" :key="index")
             v-flex.left(xs9)
               .ingredient-wrapper
                 .text {{ingred.name}}
@@ -32,7 +32,7 @@
 
 <script>
 import db from '@/libs/vuefireConfig.js'
-import { convertToMoneyString } from '@/libs/stringUtils'
+import { convertToMoneyString } from '@/libs/StringUtils'
 
 export default {
   created () {
