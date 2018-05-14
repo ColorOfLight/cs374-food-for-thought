@@ -1,6 +1,6 @@
 <template lang="pug">
   .page-container.menu-add-page
-    .inputs-container
+    .inputs-container(v-if="showContent")
       v-text-field(name="name" label="메뉴 이름" v-model="form.name" placeholder="아메리카노")
       .detail-item-group
         label 재료 선택 및 양 입력하기
@@ -24,7 +24,7 @@
             v-flex.left(xs6)
               label 예상 이윤
               .text.primary-text(:class="{uninputted: prettyInfos.expectedProfit === 0}") {{prettyInfos.profitText}}
-    v-btn.btn-bottom-fixed(:disabled ="isBtnDisabled" color="primary" @click="submitForm()") 추가하기
+    v-btn.btn-bottom-fixed(:disabled ="isBtnDisabled" color="primary" @click="submitForm()") {{bottomBtnText}}
 </template>
 
 <script>
@@ -32,6 +32,19 @@ import db from '@/libs/vuefireConfig.js'
 import { convertToMoneyString } from '@/libs/StringUtils'
 
 export default {
+  created () {
+    if (this.$route.params.menuKey) {
+      this.$bindAsObject('defaultData', db.ref('/menus/' + this.$route.params.menuKey), null, () => {
+        this.form = this.defaultData
+        this.$store.commit('setTemporaryMenu', this.defaultData)
+        this.isMenuLoaded = true;
+      });
+      this.$bindAsObject('ingredients', db.ref('/ingredients/'), null, () => {
+        this.$store.commit('setIngredients', this.ingredients)
+        this.isIngredsLoaded = true;
+      });
+    }
+  },
   data () {
     return {
       form: {
@@ -40,6 +53,8 @@ export default {
         consumerPrice: this.$store.state.temporaryMenu.consumerPrice ? this.$store.state.temporaryMenu.consumerPrice : '',
       },
       isBtnDisabled: true,
+      isMenuLoaded: false,
+      isIngredsLoaded: false,
     }
   },
   computed: {
@@ -68,7 +83,15 @@ export default {
         profitText: expectedProfit ? convertToMoneyString(expectedProfit) : "- 원",
       };  
     },
-    expectProduction() {
+    showContent () {
+      if (this.$route.name === 'MenuAdd') return true;
+      else if (this.$route.name === 'MenuEdit') return this.isMenuLoaded && this.isIngredsLoaded;
+      else return false;
+    },
+    bottomBtnText() {
+      if (this.$route.name === 'MenuAdd') return '추가하기';
+      else if (this.$route.name === 'MenuEdit') return '수정 완료하기';
+      else return '';
     }
   },
   watch: {
@@ -102,7 +125,8 @@ export default {
   },
   methods: {
     submitForm () {
-      let newkey = db.ref('/menus/').push().key;
+      let key = this.$route.params.menuKey;
+      if(!this.$route.params.menuKey) key = db.ref('/ingredients/').push().key;
       let updateData = {
         name: this.form.name,
         ingredients: this.form.ingredients,
@@ -110,7 +134,7 @@ export default {
         createdTimestamp: new Date()
       };
       let self = this;
-      db.ref('/menus/' + newkey).update(updateData).then(function() {
+      db.ref('/menus/' + key).update(updateData).then(function() {
         self.$router.go(-1);
       });
     },
