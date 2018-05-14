@@ -6,6 +6,7 @@ Vue.use(Vuex);
 const state = {
   count: 0,
   temporaryMenu: {},
+  ingredients: {},
 };
 
 const mutations = {
@@ -16,6 +17,9 @@ const mutations = {
   },
   resetTemporaryMenu(state) {
     state.temporaryMenu = {};
+  },
+  setIngredients(state, ingreds) {
+    state.ingredients = ingreds;
   }
 };
 
