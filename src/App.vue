@@ -30,18 +30,19 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import './assets/stylesheets/common';
+<style lang="stylus">
+
+@import './stylus/main.styl'
 
 html {
-  color: $default;
+  color: #333;
   font-size: 16px;
 }
 
-@include above-sm {
+@media (min-width:481px) {
   .app {
-    border-left: 1px solid $border-color;
-    border-right: 1px solid $border-color;
+    border-left: 1px solid #eee;
+    border-right: 1px solid #eee;
     margin: 0 auto;
     overflow: hidden;
     width: 480px;

@@ -3,44 +3,15 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import {
-  Vuetify,
-  VApp,
-  VNavigationDrawer,
-  VFooter,
-  VList,
-  VBtn,
-  VIcon,
-  VGrid,
-  VToolbar,
-  transitions,
-  VSubheader,
-  VTextField,
-  VSelect,
-  VCheckbox
-} from 'vuetify'
+import Vuetify from 'vuetify'
 import VueFire from 'vuefire'
 import store from '@/store/index'
-import './stylus/main.styl'
+import '@/assets/stylesheets/common.scss';
+
 
 
 Vue.use(VueFire)
 Vue.use(Vuetify, {
-  components: {
-    VApp,
-    VNavigationDrawer,
-    VFooter,
-    VList,
-    VBtn,
-    VIcon,
-    VGrid,
-    VToolbar,
-    transitions,
-    VSubheader,
-    VTextField,
-    VSelect,
-    VCheckbox
-  },
   theme: {
     primary: '#f44336'
   }
