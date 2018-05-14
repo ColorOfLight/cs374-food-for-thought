@@ -18,7 +18,7 @@ import db from '@/libs/vuefireConfig.js'
 
 export default {
   created () {
-    if(this.$route.params.ingredientKey){
+    if (this.$route.params.ingredientKey) {
       this.$bindAsObject('defaultData', db.ref('/ingredients/' + this.$route.params.ingredientKey), null, () => {
         this.form = this.defaultData
         for(let i = 0; i < this.units.length; i++){
@@ -27,7 +27,6 @@ export default {
         }
       })
     }
-
   },
   data () {
     return {

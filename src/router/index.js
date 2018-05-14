@@ -54,6 +54,12 @@ export default new Router({
       component: MenuDetailPage
     },
     {
+      path: '/menus/:menuKey/edit',
+      name: 'MenuEdit',
+      component: MenuAddPage
+    },
+
+    {
       path: '*',
       component: HelloWorld
     }

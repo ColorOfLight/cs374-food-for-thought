@@ -27,7 +27,7 @@
             v-flex.left(xs6)
               label 예상 이윤
               .text.primary-text {{totalIngredients.prettyBenefit}}
-    v-btn.btn-bottom-fixed(color="primary" @click="submitForm()") 편집하기
+    v-btn.btn-bottom-fixed(color="primary" @click="$router.push({name:'MenuEdit', params: {menuKey: $route.params.menuKey}})") 수정하기
 </template>
 
 <script>
@@ -106,7 +106,7 @@ export default {
         prettyBenefit: null
       };
     }
-  }
+  },
 }
 </script>
 
