@@ -22,7 +22,7 @@
       .detail-item-group
         label 단위 용량당 가격
         .text {{convertedUnitPrice}}
-    v-btn.btn-bottom-fixed(color="primary" @click="$router.push(editRoute)") 편집하기
+    v-btn.btn-bottom-fixed(color="primary" @click="$router.push(editRoute)") 수정하기
 </template>
 
 <script>
