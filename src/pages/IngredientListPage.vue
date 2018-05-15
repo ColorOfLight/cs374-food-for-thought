@@ -13,7 +13,7 @@
         .ingredient-select-item(v-for="(ingredient, key) in prettyIngredients")
           v-checkbox(:label="ingredient.name" color="primary" v-model="selections[key]" hide-details)
     empty-list-container(v-else text="메뉴에 들어갈 재료들을 추가해주세요!" :buttonText="buttonText" clickRouteName="IngredientAdd")
-    v-btn.btn-bottom-fixed(v-if="$route.name === 'IngredientSelect'" :disabled="isbtnDisabled" color="primary" @click="saveSelections()") 재료 추가하기
+    v-btn.btn-bottom-fixed(v-if="$route.name === 'IngredientSelect'" :disabled="isbtnDisabled" color="primary" @click="saveSelections()") 재료 선택하기
   spinner(v-else)
 </template>
 
@@ -42,7 +42,7 @@ export default {
       buttonText: '재료 추가하기',
       isFirebaseLoaded: false,
       ingredients: this.$firebaseRefs ? this.$firebaseRefs.ingredients : null,
-      selections: {},
+      selections: this.getSelectionsFromTemp(),
       isbtnDisabled: false
     }
   },
@@ -73,13 +73,17 @@ export default {
       } else {
         return null;
       }
-    }
+    },
   },
   methods: {
     saveSelections () {
       let ingredients = {};
+      const tempIngredients = this.$store.state.temporaryMenu.ingredients ? this.$store.state.temporaryMenu.ingredients : {};
       for (const key of Object.keys(this.selections)) {
-        if (this.selections[key]) ingredients[key] = '';
+        if (this.selections[key]) {
+          if (tempIngredients[key] !== undefined || (typeof tempIngredients[key]) === 'boolean') ingredients[key] = tempIngredients[key];
+          else ingredients[key] = '';
+        }
       }
       if (Object.keys(ingredients).length === 0) {
         alert('재료를 하나 이상 선택해주세요!');
@@ -88,6 +92,16 @@ export default {
       this.$store.commit('setTemporaryMenu', {ingredients});
       this.$router.go(-1);
     },
+    getSelectionsFromTemp() {
+      const temp = this.$store.state.temporaryMenu.ingredients;
+      if (!temp || Object.keys(temp).length === 0) return {};
+
+      let result = {};
+      for (const key of Object.keys(temp)) {
+        result[key] = true;
+      }
+      return result;
+    }
   },
 }
 </script>
