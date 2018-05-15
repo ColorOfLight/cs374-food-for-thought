@@ -7,9 +7,13 @@
         .menu-ingredients-container(v-if="Object.keys(prettyInfos.ingredients).length > 0")
           v-layout(v-for="(ingred, key) in prettyInfos.ingredients" :key="key")
             v-flex.left(xs9)
-              v-text-field(name="ingredientSFDS" :prefix="ingred.name" :suffix="ingred.unit" v-model="form.ingredients[key]" hide-details)
+              v-text-field(type="number" :prefix="ingred.name" :suffix="ingred.unit" v-model="form.ingredients[key]" hide-details)
             v-flex.right(xs3)
               .ingredient-price(:class="{uninputted: ingred.productionPrice === 0}") {{ingred.productionPriceText}}
+          v-layout.btn-ingredient-edit-container
+            v-flex(xs7)
+            v-flex(xs5)
+              v-btn.btn-select-ingredient(color="primary" outline @click="$router.push({name: 'IngredientSelect'})") 재료 편집하기
         .btn-container(v-else)
           v-btn.btn-select-ingredient(color="primary" outline @click="$router.push({name: 'IngredientSelect'})") 재료 선택하기
         .menu-detail-price-container
@@ -34,11 +38,15 @@ import { convertToMoneyString } from '@/libs/StringUtils'
 export default {
   created () {
     if (this.$route.params.menuKey) {
-      this.$bindAsObject('defaultData', db.ref('/menus/' + this.$route.params.menuKey), null, () => {
-        this.form = this.defaultData
-        this.$store.commit('setTemporaryMenu', this.defaultData)
+      if (Object.keys(this.$store.state.temporaryMenu).length === 0) {
+        this.$bindAsObject('defaultData', db.ref('/menus/' + this.$route.params.menuKey), null, () => {
+          this.form = this.defaultData
+          this.$store.commit('setTemporaryMenu', this.defaultData)
+          this.isMenuLoaded = true;
+        });
+      } else {
         this.isMenuLoaded = true;
-      });
+      }
       this.$bindAsObject('ingredients', db.ref('/ingredients/'), null, () => {
         this.$store.commit('setIngredients', this.ingredients)
         this.isIngredsLoaded = true;
@@ -175,5 +183,9 @@ export default {
   border-radius: .25rem;
   height: 2.5rem;
   width: 100%;
+}
+
+.btn-ingredient-edit-container {
+  margin-top: 1.25rem;
 }
 </style>
