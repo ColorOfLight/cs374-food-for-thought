@@ -47,24 +47,6 @@ export default {
       form: {}
     }
   },
-  methods: {
-    submitForm () {
-      // let newkey = db.ref('/ingredients/').push().key;
-      // let updateData = {
-      //   amount: this.form['amount'],
-      //   name: this.form['name'],
-      //   price: this.form['price'],
-      //   storeName: this.form['storeName'],
-      //   productName: this.form['productName'],
-      //   unit: this.form['unit'].split(' ')[0],
-      //   createdTimestamp: new Date()
-      // };
-      // let self = this;
-      // db.ref('/ingredients/' + newkey).update(updateData).then(function() {
-      //   self.$router.go(-1);
-      // });
-    }
-  },
   computed: {
     convertedConsumerPrice: function () {
       return this.menuData['consumerPrice'] == null ? null : convertToMoneyString(this.menuData['consumerPrice'])
@@ -79,11 +61,11 @@ export default {
             let amountUsed = this.menuData['ingredients'][this.ingredData[i]['.key']]
             let amount = this.ingredData[i]["amount"]
             let price = this.ingredData[i]["price"]
-            let prodPrice = price * (amount / amountUsed)
+            let prodPrice = price * (amountUsed / amount)
 
             data.push({
               name: this.ingredData[i]["name"],
-              amount: this.ingredData[i]["amount"],
+              amount: amountUsed,
               unit: this.ingredData[i]["unit"],
               ingredPrice: convertToMoneyString(prodPrice)
             })
