@@ -149,7 +149,7 @@ export default {
     calculateProductionPrice(price, amount, input) {
       const numPrice = (typeof price === 'number') ? price : parseInt(price);
       const numAmount = (typeof amount === 'number') ? amount : parseInt(amount);
-      const numInput = (typeof input === 'number') ? price : parseInt(input);
+      const numInput = (typeof input === 'number') ? input : parseInt(input);
       // TODO: amount === 0일 때 에러 처리
       if (isNaN(numInput) || numAmount === 0) return 0;
       return numPrice / numAmount * numInput;
