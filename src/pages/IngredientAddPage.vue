@@ -10,7 +10,7 @@
         v-flex.right(xs5)
           v-select(:items="units" label="단위" placeholder="선택" v-model="form.unit")
       v-text-field(name="price" label="가격 (원)" type="number" placeholder="1000" v-model="form.price")
-    v-btn.btn-bottom-fixed(:disabled = "isbtnDisabled" color="primary" @click="submitForm()") 추가하기
+    v-btn.btn-bottom-fixed(:disabled = "isbtnDisabled" color="primary" @click="submitForm()") {{bottomBtnText}}
 </template>
 
 <script>
@@ -34,6 +34,13 @@ export default {
       form: {name : "", storeName : "", productName : "", amount : "", unit: "", price : ""},
       isbtnDisabled: true
     }
+  },
+  computed: {
+    bottomBtnText: function () {
+      if (this.$route.name === 'IngredientAdd') return '추가하기';
+      else if (this.$route.name === 'IngredientEdit') return '수정 완료하기'; 
+      else return '';
+    },
   },
   watch: {
     "form.amount": function (val) {
