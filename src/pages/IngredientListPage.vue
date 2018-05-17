@@ -104,8 +104,11 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
-    if (to.name === 'IngredientSelect' && (from.name === 'MenuAdd' || from.name === 'MenuEdit')) next();
-    else next('/');
+    if (to.name === 'IngredientSelect') {
+      if (from.name === 'MenuAdd' || from.name === 'MenuEdit') next();
+      else next('/');
+    }
+    else next();
   },
 }
 </script>
