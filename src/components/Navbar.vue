@@ -17,9 +17,18 @@
       v-btn(v-else icon @click="navContent.minusRoute ? $router.go(-1) : $router.push(navContent.prevRoute)")
         v-icon.toolbar-icon arrow_back
       v-toolbar-title.toolbar-title {{navContent.title}}
+      v-spacer
+      v-menu(v-if="navContent.subMenus && navContent.subMenus.length > 0" bottom left)
+        v-btn(slot="activator" icon)
+          v-icon more_vert
+        v-list
+          v-list-tile(v-for="(menu, i) in navContent.subMenus" :key="i" @click="menu.method()")
+            v-list-tile-title {{menu.title}}
 </template>
 
 <script>
+import db from '@/libs/vuefireConfig.js'
+
 export default {
   data () {
     return {
@@ -30,7 +39,7 @@ export default {
   computed: {
     navContent: function () {
       const navSwitch = (routeName) => ({
-        // title, prevRoute, subMenu
+        // title, prevRoute, subMenus
         MenuList: {
           title: '메뉴',
         },
@@ -39,7 +48,10 @@ export default {
           prevRoute: {
             name: 'MenuList'
           },
-          subMenu: ['deleteMenu'],
+          subMenus: [{
+            title: '메뉴 삭제하기',
+            method: this.deleteMenu,
+          }],
         },
         MenuAdd: {
           title: '새 메뉴 추가하기',
@@ -62,7 +74,10 @@ export default {
           prevRoute: {
             name: 'IngredientList',
           },
-          subMenu: ['deleteIngredient'],
+          // subMenus: [{
+          //   title: '재료 삭제하기',
+          //   method: this.deleteIngredient,
+          // }],
         },
         IngredientAdd: {
           title: '재료 추가하기',
@@ -94,6 +109,23 @@ export default {
         this.$router.push({name: routeName});
       }
     },
+    deleteIngredient () {
+      // TODO: confirm에서 sweetAlert로 바꾸기
+      // TODO: 연결된 메뉴들도 처리가 필요함;;
+      // const confirmDel = confirm('재료를 정말 삭제하시겠습니까?')
+      // if (confirmDel) {
+      //   db.ref('/ingredients/' + this.$route.params.ingredientKey).remove();
+      //   this.$route.push({name: 'IngredientList'});
+      // }
+    },
+    deleteMenu () {
+      // TODO: confirm에서 sweetAlert로 바꾸기
+      const confirmDel = confirm('메뉴를 정말 삭제하시겠습니까?')
+      if (confirmDel) {
+        db.ref('/menus/' + this.$route.params.menuKey).remove();
+        this.$router.push({name: 'MenuList'});
+      }
+    },
   },
 }
 </script>
@@ -108,7 +140,8 @@ export default {
   color: $default;
 }
 
-.toolbar-icon {
+.toolbar-icon,
+.menu .icon {
   color: $gray-500 !important;
 }
 
