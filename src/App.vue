@@ -8,6 +8,7 @@
 import Navbar from '@/components/Navbar'
 
 export default {
+  name: 'App',
   components: {
     navbar: Navbar
   },
@@ -26,7 +27,6 @@ export default {
       title: 'Vuetify.js'
     }
   },
-  name: 'App'
 }
 </script>
 

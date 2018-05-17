@@ -103,6 +103,10 @@ export default {
       return result;
     }
   },
+  beforeRouteEnter(to, from, next) {
+    if (to.name === 'IngredientSelect' && (from.name === 'MenuAdd' || from.name === 'MenuEdit')) next();
+    else next('/');
+  },
 }
 </script>
 
