@@ -138,7 +138,7 @@ export default {
 .ingredient-list-container {
   background-color: $white;
   box-shadow: 0 .0625rem .125rem rgba(0, 0, 0, .2);
-  margin: 0 1rem;
+  margin: 0 1rem 3rem;
   
   .ingredient-list-item {
     border-bottom: 1px solid $border-color;
