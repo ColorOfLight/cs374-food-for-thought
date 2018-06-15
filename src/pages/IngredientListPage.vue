@@ -2,7 +2,7 @@
   .ingredient-list-page(v-if="isFirebaseLoaded")
     template(v-if="Object.keys(ingredients).length > 0")
       .btn-container
-        v-btn.btn-new-ingredient(v-if="$route.name === 'IngredientList'" color="primary" outline @click="$router.push({name: 'IngredientAdd'})")
+        v-btn.btn-new-ingredient(color="primary" outline @click="moveToIngredientAdd()")
           v-icon.add-icon add
           | {{buttonText}}
       .ingredient-list-container(v-if="$route.name === 'IngredientList'")
@@ -101,11 +101,17 @@ export default {
         result[key] = true;
       }
       return result;
-    }
+    },
+    moveToIngredientAdd() {
+      if (this.$route.name === 'IngredientSelect') {
+        this.$store.commit('setFromIngredientSelect', true);
+      }
+      this.$router.push({name: 'IngredientAdd'});
+    },
   },
   beforeRouteEnter(to, from, next) {
     if (to.name === 'IngredientSelect') {
-      if (from.name === 'MenuAdd' || from.name === 'MenuEdit') next();
+      if (from.name === 'MenuAdd' || from.name === 'MenuEdit' || from.name === 'IngredientAdd') next();
       else next('/');
     }
     else next();

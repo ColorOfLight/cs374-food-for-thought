@@ -7,6 +7,7 @@ const state = {
   count: 0,
   temporaryMenu: {},
   ingredients: {},
+  fromIngredientSelect: false,
 };
 
 const mutations = {
@@ -20,6 +21,9 @@ const mutations = {
   },
   setIngredients(state, ingreds) {
     state.ingredients = ingreds;
+  },
+  setFromIngredientSelect(state, input) {
+    state.fromIngredientSelect = input;
   }
 };
 
