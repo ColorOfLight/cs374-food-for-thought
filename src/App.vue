@@ -1,6 +1,6 @@
 <template lang="pug">
   v-app.app
-    navbar
+    navbar(v-if="$route.name !== 'Intro'")
     router-view
 </template>
 

@@ -7,6 +7,7 @@ import IngredientAddPage from '@/pages/IngredientAddPage'
 import IngredientDetailPage from '@/pages/IngredientDetailPage'
 import MenuAddPage from '@/pages/MenuAddPage'
 import MenuDetailPage from '@/pages/MenuDetailPage'
+import IntroPage from '@/pages/IntroPage'
 
 Vue.use(Router)
 
@@ -15,6 +16,11 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'Intro',
+      component: IntroPage,
+    },
+    {
+      path: '/menus',
       name: 'MenuList',
       component: MenuListPage
     },
