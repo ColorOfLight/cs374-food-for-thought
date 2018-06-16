@@ -14,7 +14,6 @@
                 .amount {{ingred.amount + ' ' + ingred.unit}}
             v-flex.right(xs3)
               .ingredient-price {{ingred.ingredPrice}}
-
         .menu-detail-price-container
           v-layout
             v-flex.left(xs6)
@@ -27,17 +26,25 @@
             v-flex.left(xs6)
               label 예상 이윤
               .text.primary-text {{totalIngredients.prettyBenefit}}
+        .sales-graph-container
+          .detail-item-group
+            label 월별 메뉴 판매량 (예시)
+            sales-graph
     v-btn.btn-bottom-fixed(color="primary" @click="$router.push({name:'MenuEdit', params: {menuKey: $route.params.menuKey}})") 수정하기
 </template>
 
 <script>
 import db from '@/libs/vuefireConfig.js'
 import { convertToMoneyString } from '@/libs/StringUtils'
+import SalesGraph from '@/components/SalesGraph'
 
 export default {
   created () {
     this.$bindAsObject('menuData', db.ref('/menus/' + this.$route.params.menuKey))
     this.$bindAsArray('ingredData', db.ref('/ingredients/'))
+  },
+  components: {
+    'sales-graph': SalesGraph,
   },
   data () {
     return {
@@ -94,7 +101,7 @@ export default {
 
 <style scoped lang="scss">
 .inputs-container {
-  padding: 0 1rem 2rem;
+  padding: 0 1rem;
 }
 
 .input-group {
