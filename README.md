@@ -39,4 +39,4 @@ firebase depoly
 
 [Live Prototype](https://cs374-foodforthought.firebaseapp.com/)
 
-[Design (Figma)](https://github.com/ColorOfLight/cs374-food-for-thought)
+[Design (Figma)](https://www.figma.com/file/PGGqrjpsQTODaDyivaIUfJ1w/2018-2Q-HCI)
